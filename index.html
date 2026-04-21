@@ -26,21 +26,35 @@
         body {
             background: #0a0a0a url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            height: 100vh;
+
+            min-height: 100vh;   /* height emas */
             width: 100vw;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+
+            overflow-x: hidden;  /* faqat horizontalni yopamiz */
+            overflow-y: auto;    /* vertical scroll ON */
+
             color: var(--text-main);
         }
 
         /* Overlay Layer */
         .overlay {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: 1;
+
+            background: radial-gradient(
+                circle at center,
+                rgba(0,0,0,0.35) 0%,
+                rgba(0,0,0,0.85) 100%
+            );
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            z-index: -1;
         }
 
         /* Top Navigation Bar */
@@ -49,7 +63,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 80px;
+            height: 55px; /* 80px → 55px */
             background: rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -57,7 +71,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 18px; /* 30px → 18px */
             z-index: 1000;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
@@ -103,11 +117,15 @@
             z-index: 10;
             width: 100%;
             max-width: 440px;
-            height: 100vh;
+
+            min-height: 100vh;   /* height emas */
+            height: auto;        /* muhim */
+
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start; /* center emas */
+
             padding: 120px 20px 40px 20px;
         }
 
@@ -115,6 +133,8 @@
         .profile-wrapper {
             text-align: center;
             animation: fadeInDown 1.2s ease-out;
+
+            margin-bottom: 25px; /* <-- yangi bo‘sh joy */
         }
 
         .avatar-circle {
@@ -178,15 +198,23 @@
         }
 
         .info-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-            padding: 30px 15px;
-            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            padding: 22px 14px;
+            border-radius: 22px;
             text-align: center;
+
+            /* start state */
             opacity: 0;
-            /* Bounce Animation Logic */
-            animation: bounceInUp 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            transform: translateY(25px) scale(0.98);
+
+            /* smooth mobile-friendly animation */
+            animation: cardSoftIn 0.8s ease-out forwards;
+
+            transition: all 0.35s ease;
         }
 
         .info-card:hover {
@@ -215,10 +243,50 @@
         /* Copyright Footer */
         .site-footer {
             margin-top: 30px;
+            padding: 12px 18px;
+
             font-size: 11px;
-            color: var(--text-dim);
+            color: rgba(255, 255, 255, 0.65);
             letter-spacing: 2px;
             text-transform: uppercase;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            position: relative;
+            overflow: hidden;
+
+            animation: footerFade 1s ease-out forwards;
+            transition: all 0.3s ease;
+        }
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+
+            background: url('bg.jpg') no-repeat center center;
+            background-size: cover;
+
+            transform: scale(1.1); /* edges yo‘q bo‘lib ketmasin */
+            z-index: -2;
+
+            will-change: transform;
+        }
+        @keyframes cardSoftIn {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.98);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
         }
 
         /* Keyframes for Smooth Animations */
@@ -241,14 +309,17 @@
 
         /* Responsive */
         @media (max-width: 400px) {
-            .avatar-circle { width: 150px; height: 150px; }
-            .user-name { font-size: 20px; }
-            .card-value { font-size: 14px; }
+            .info-card {
+                padding: 18px 12px;
+                border-radius: 18px;
+                backdrop-filter: blur(10px);
+            }
         }
     </style>
 </head>
 <body>
-
+    <div class="bg-layer"></div>
+    <div class="overlay"></div>
     <div class="overlay"></div>
 
     <audio id="mainAudio" src="music.mp3"></audio>
@@ -266,7 +337,7 @@
                 <img src="avatar.jpg" alt="Umirova Sevara">
             </div>
             <h1 class="user-name">UMIROVA SEVARA<br>ITOLMASOVNA</h1>
-            <a href="https://t.me/yujin_studio" target="_blank" class="action-btn">TELEGRAM</a>
+            <a href="https://t.me/isu_umirovasevaraitolmasovna" target="_blank" class="action-btn">TELEGRAM</a>
         </section>
 
         <section class="dynamic-grid">
@@ -289,7 +360,7 @@
         </section>
 
         <footer class="site-footer">
-            &copy; 2026 Abdubakr Development. All Rights Reserved.
+            &copy; 2026 ISU uchun maxsus tayyorlandi.
         </footer>
     </div>
 
