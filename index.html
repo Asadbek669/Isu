@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISU Profile Card</title>
+    <style>
+        /* Umumiy sozlamalar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #121212 url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Qora qatlam (Overlay) */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Header qismi */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .music-btn {
+            background: transparent;
+            border: 1px solid #c4a47c;
+            color: #c4a47c;
+            padding: 6px 24px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s all ease;
+        }
+
+        .music-btn.active {
+            background: #c4a47c;
+            color: white;
+            box-shadow: 0 0 15px rgba(196, 164, 124, 0.5);
+        }
+
+        /* Profil qismi */
+        .profile-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: -50px;
+        }
+
+        .avatar-box {
+            width: 160px;
+            height: 160px;
+            border: 3px solid white;
+            border-radius: 50%;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        .telegram-link {
+            background: white;
+            color: black;
+            text-decoration: none;
+            padding: 14px 60px;
+            border-radius: 35px;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+            transition: 0.3s;
+        }
+
+        .telegram-link:active {
+            transform: scale(0.95);
+        }
+
+        /* 4 talik Panel qismi */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 25px 15px;
+            border-radius: 25px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .info-card .title {
+            color: #c4a47c;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-card .content {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Animatsiya kechikishlari */
+        .info-card:nth-child(1) { animation-delay: 0.2s; }
+        .info-card:nth-child(2) { animation-delay: 0.4s; }
+        .info-card:nth-child(3) { animation-delay: 0.6s; }
+        .info-card:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile moslashuvchanlik */
+        @media (max-width: 380px) {
+            .name { font-size: 20px; }
+            .info-card .content { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <audio id="musicPlayer" src="music.mp3" loop></audio>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="logo">ISU</div>
+            <button class="music-btn" id="musicBtn">MUSIC</button>
+        </header>
+
+        <div class="profile-container">
+            <div class="avatar-box">
+                <img src="avatar.jpg" alt="Umirova Sevara">
+            </div>
+            <h1 class="name">UMIROVA SEVARA<br>ITOLMASOVNA</h1>
+            <a href="https://t.me/username" class="telegram-link">TELEGRAM</a>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span class="title">KASBI</span>
+                <span class="content">O'qituvchi</span>
+            </div>
+            <div class="info-card">
+                <span class="title">SOHASI</span>
+                <span class="content">Dublyajchi</span>
+            </div>
+            <div class="info-card">
+                <span class="title">TUG'ILGAN YILI</span>
+                <span class="content">09.12.2003</span>
+            </div>
+            <div class="info-card">
+                <span class="title">HOBBY</span>
+                <span class="content">Rassomchilik</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById('musicBtn');
+        const player = document.getElementById('musicPlayer');
+
+        musicBtn.addEventListener('click', () => {
+            if (player.paused) {
+                player.play();
+                musicBtn.classList.add('active');
+                musicBtn.innerText = 'PAUSE';
+            } else {
+                player.pause();
+                musicBtn.classList.remove('active');
+                musicBtn.innerText = 'MUSIC';
+            }
+        });
+
+        // Brauzer avtomatik musiqani bloklamasligi uchun user interaction kutiladi
+    </script>
+
+</body>
+</html>
