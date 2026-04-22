@@ -157,16 +157,11 @@
             z-index: 10;
             width: 100%;
             max-width: 440px;
-
-            min-height: 100vh;   /* height emas */
-            height: auto;        /* muhim */
-
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* center emas */
-
-            padding: 120px 20px 40px 20px;
+            padding: 100px 15px 40px 15px; /* Yon tomondan paddingni kamaytirdik */
         }
 
         /* Profile Section */
@@ -262,9 +257,10 @@
         /* Animated Info Grid */
         .dynamic-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
+            grid-template-columns: repeat(2, 1fr); /* Aniq 2 ustun */
+            gap: 15px;
             width: 100%;
+            margin-bottom: 20px; /* Video bo'limidan ajratish */
         }
 
         .info-card {
@@ -406,11 +402,15 @@
         .delay-4 { animation-delay: 1.0s; }
 
         /* Responsive */
-        @media (max-width: 400px) {
-            .info-card {
-                padding: 18px 12px;
-                border-radius: 18px;
-                backdrop-filter: blur(10px);
+        @media (max-width: 380px) {
+            .dynamic-grid {
+                gap: 10px;
+            }
+            .card-value {
+                font-size: 14px; /* Matn sig'ishi uchun */
+            }
+            .user-name {
+                font-size: 20px;
             }
         }
 
@@ -490,14 +490,14 @@
         }
 
         /* Video Section Dizayni */
-        /* Video Section - Slayder o'lchamini moslashtirish */
         .video-slider-section {
-            width: 100%;
-            max-width: 400px; /* Cardlar bilan bir xil kenglik */
-            margin: 30px auto;
-            padding: 0 10px;
+            width: 100%; 
+            max-width: 100%; /* Konteynerdan chiqib ketmasligi uchun */
+            margin: 20px 0;
+            padding: 0;
             opacity: 0;
             animation: cardSoftIn 0.8s ease-out 1.2s forwards;
+            overflow: hidden; /* Gorizontal scroll chiqishini oldini oladi */
         }
 
         .swiper {
@@ -505,6 +505,7 @@
             border-radius: 25px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
+            padding-bottom: 40px;
         }
 
         .video-container {
