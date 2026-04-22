@@ -79,7 +79,7 @@
                 rgba(0,0,0,0.85) 100%
             );
 
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(10px);
 
             z-index: -1;
@@ -109,9 +109,21 @@
             font-weight: 900;
             letter-spacing: 4px;
             text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--primary-gold));
+
+            background: linear-gradient(
+                270deg,
+                #ffffff,
+                #c4a47c,
+                #ffffff,
+                #c4a47c
+            );
+
+            background-size: 400% 400%;
+
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+
+            animation: gradientMove 6s ease infinite;
         }
 
         .music-controller {
@@ -168,24 +180,54 @@
         .avatar-circle {
             width: 180px;
             height: 180px;
-            border: 4px solid #fff;
-            border-radius: 50%;
-            padding: 6px;
             margin: 0 auto 25px;
-            position: relative;
-            transition: transform 0.5s ease;
+
+            position: relative; /* MUHIM */
+            border-radius: 50%;
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        } 
+
+        .avatar-circle::before {
+            content: "";
+            position: absolute;
+            inset: -4px; /* ring tashqariga chiqadi */
+
+            border-radius: 50%;
+
+            background: conic-gradient(
+                #feda75,
+                #fa7e1e,
+                #d62976,
+                #962fbf,
+                #4f5bd5,
+                #feda75
+            );
+
+            animation: spinRing 4s linear infinite;
+
+            z-index: -1;
         }
 
-        .avatar-circle:hover {
-            transform: rotate(5deg) scale(1.05);
+        .avatar-circle::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            background: #0a0a0a; /* body rangiga mos */
+            border-radius: 50%;
+            z-index: -1;
         }
 
         .avatar-circle img {
+            position: relative;
+            z-index: 1;
+
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            background: #222;
         }
 
         .user-name {
@@ -251,7 +293,11 @@
             transform: translateY(-5px);
             transition: 0.3s;
         }
-
+        .info-card {
+            animation:
+                cardSoftIn 0.8s ease-out forwards,
+                floatY 5s ease-in-out infinite;
+        }
         .card-label {
             color: var(--primary-gold);
             font-size: 11px;
@@ -317,6 +363,18 @@
             }
         }
 
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         /* Keyframes for Smooth Animations */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -327,6 +385,18 @@
             0% { opacity: 0; transform: translateY(100px); }
             60% { opacity: 1; transform: translateY(-15px); }
             100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatY {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         /* Animation Delays */
@@ -343,12 +413,152 @@
                 backdrop-filter: blur(10px);
             }
         }
+
+        @keyframes spinRing {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+/* --- Oldingi .hearts-container va .heart ni o'chiring va bularni qo'shing --- */
+
+        .hearts-container {
+            position: fixed; /* Butun ekranni qoplash uchun fixed */
+            inset: 0;
+            pointer-events: none; /* Tugmalarni bosishga xalaqit bermasligi uchun */
+            z-index: 9999; /* Hamma narsadan ustun turishi uchun */
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            /* Boshlang'ich o'lcham (JS da o'zgartiriladi) */
+            font-size: 30px; 
+            /* Instagram ranglari gradienti */
+            background: radial-gradient(circle at 30% 30%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Yaxshiroq ko'rinish uchun ozgina soya */
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+            
+            user-select: none;
+            opacity: 0;
+            
+            /* Faqat aylanish va kattalashish uchun CSS (harakat JS da) */
+            transform: translate(-50%, -50%) rotate(var(--rotate)) scale(var(--scale));
+            
+            /* Paydo bo'lish va yo'qolish effekti */
+            transition: opacity 0.2s ease-out;
+        }
+
+        /* Paydo bo'lgandagi holat */
+        .heart.fade-in {
+            opacity: 1;
+        }
+
+        /* Yo'qolayotgandagi holat */
+        .heart.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-in; /* Sekinroq yo'qoladi */
+        }
+
+        /* random ranglar */
+        .heart:nth-child(odd) {
+            color: #ff4d6d;
+        }
+        .heart:nth-child(even) {
+            color: #ff1a1a;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) rotate(var(--rotate)) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                /* Yurakchalar har tomonga tarqalishi uchun */
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rotate)) scale(1.5);
+            }
+        }
+
+        /* Video Section Dizayni */
+        .video-slider-section {
+            width: 100%;
+            max-width: 440px; /* Info-card o'lchami bilan bir xil */
+            margin: 35px auto 20px;
+            padding: 0 5px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardSoftIn 0.8s ease-out 1.2s forwards; /* Eng oxirida paydo bo'ladi */
+        }
+
+        .swiper {
+            width: 100%;
+            border-radius: 30px; /* Yumshoqroq burchaklar */
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* 1x1 nisbat */
+            background: #000;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* Navigatsiya tugmalarini tillarang qilish */
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--primary-gold) !important;
+            background: rgba(0, 0, 0, 0.4);
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+        }
+
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 18px !important;
+            font-weight: bold;
+        }
+
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.3) !important;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-gold) !important;
+            box-shadow: 0 0 10px var(--primary-gold);
+        }
+
     </style>
 </head>
 <body>
     <div class="bg-layer"></div>
     <div class="overlay"></div>
-    <div class="overlay"></div>
+
 
     <audio id="mainAudio" src="music.mp3"></audio>
 
@@ -363,6 +573,7 @@
         <section class="profile-wrapper">
             <div class="avatar-circle">
                 <img src="avatar.jpg" alt="Umirova Sevara">
+                <div class="hearts-container"></div>
             </div>
             <h1 class="user-name">UMIROVA SEVARA<br>ITOLMASOVNA</h1>
             <a href="https://t.me/isu_umirovasevaraitolmasovna" target="_blank" class="action-btn">TELEGRAM</a>
@@ -387,6 +598,35 @@
             </div>
         </section>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+        <section class="video-slider-section">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="video-container">
+                            <video src="video1.mp4" poster="thumb1.jpg" playsinline controls></video>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="video-container">
+                            <video src="video2.mp4" poster="thumb2.jpg" playsinline controls></video>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="video-container">
+                            <video src="video3.mp4" poster="thumb3.jpg" playsinline controls></video>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
         <footer class="site-footer">
             &copy; 2026 ISU uchun maxsus tayyorlandi.
         </footer>
@@ -394,10 +634,77 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. PROFILDAGI YURAKCHALAR ANIMATSIYASI (GRAVITY BILAN) ---
+            const avatar = document.querySelector('.avatar-circle');
+            const container = document.querySelector('.hearts-container');
+
+            const GRAVITY = 0.8; 
+            const DRAG = 0.98;    
+            const HEART_COUNT = 25; 
+
+            avatar.addEventListener('click', (e) => {
+                const rect = avatar.getBoundingClientRect();
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + rect.height / 2;
+
+                for (let i = 0; i < HEART_COUNT; i++) {
+                    createPhysicsHeart(startX, startY);
+                }
+            });
+
+            function createPhysicsHeart(x, y) {
+                const heart = document.createElement('span');
+                heart.className = 'heart';
+                heart.innerText = '❤';
+
+                const rotate = (Math.random() - 0.5) * 120;
+                const scale = 1.0 + Math.random() * 1.5; 
+
+                heart.style.setProperty('--rotate', `${rotate}deg`);
+                heart.style.setProperty('--scale', scale);
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+
+                container.appendChild(heart);
+
+                let velX = (Math.random() - 0.5) * 40;  
+                let velY = (Math.random() - 0.7) * 50;  
+
+                let posX = x;
+                let posY = y;
+
+                requestAnimationFrame(() => heart.classList.add('fade-in'));
+
+                function updateHeart() {
+                    velY += GRAVITY;   
+                    velX *= DRAG;      
+                    velY *= DRAG;      
+
+                    posX += velX;
+                    posY += velY;
+
+                    heart.style.left = `${posX}px`;
+                    heart.style.top = `${posY}px`;
+
+                    const isOffScreen = posY > window.innerHeight + 100 || posX < -100 || posX > window.innerWidth + 100;
+                    
+                    if (isOffScreen) {
+                        heart.classList.remove('fade-in');
+                        heart.classList.add('fade-out');
+                        setTimeout(() => heart.remove(), 500);
+                    } else {
+                        requestAnimationFrame(updateHeart);
+                    }
+                }
+                requestAnimationFrame(updateHeart);
+            }
+
+
+            // --- 2. MUSIQA BOSHQARUVI ---
             const audio = document.getElementById('mainAudio');
             const toggleBtn = document.getElementById('musicToggle');
 
-            // Music Control Logic
             const togglePlay = () => {
                 if (audio.paused) {
                     audio.play().then(() => {
@@ -408,38 +715,71 @@
                     });
                 } else {
                     audio.pause();
-                    resetButton();
+                    resetMusicButton();
                 }
             };
 
-            const resetButton = () => {
+            const resetMusicButton = () => {
                 toggleBtn.classList.remove('playing');
                 toggleBtn.innerText = 'MUSIC';
             };
 
-            // Event Listeners
             toggleBtn.addEventListener('click', togglePlay);
+            audio.addEventListener('ended', resetMusicButton);
 
-            // Musiqa tugashi bilan holatni qaytarish
-            audio.addEventListener('ended', () => {
-                resetButton();
-                console.log("Musiqa yakunlandi, tugma holati qaytarildi.");
+
+            // --- 3. VIDEO SLIDER (SWIPER) VA AQLLI OVOZ NAZORATI ---
+            // Video qo'yilganda musiqani o'chirish funksiyasi
+            const stopMainMusic = () => {
+                if (!audio.paused) {
+                    audio.pause();
+                    resetMusicButton();
+                }
+            };
+
+            const swiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2,
+                    slideShadows: true,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    dynamicBullets: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                on: {
+                    slideChange: function () {
+                        // Slider surilganda barcha videolarni to'xtatish
+                        document.querySelectorAll('video').forEach(v => v.pause());
+                    }
+                }
             });
 
-            // Card interaktivligi (Hover effekti uchun qo'shimcha animatsiya yordami)
-            const cards = document.querySelectorAll('.info-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transition = "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-                });
+            // Har bir videoga 'play' bo'lganda musiqani to'xtatish hodisasini biriktirish
+            document.querySelectorAll('video').forEach(video => {
+                video.addEventListener('play', stopMainMusic);
             });
-        });
 
-        // Background parallax effekti (Ozroq harakat qo'shish uchun)
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) / 50;
-            const moveY = (e.clientY - window.innerHeight / 2) / 50;
-            document.body.style.backgroundPosition = `${50 + moveX}% ${50 + moveY}%`;
+
+            // --- 4. PARALLAX VA FON EFFEKTI ---
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) / 50;
+                const moveY = (e.clientY - window.innerHeight / 2) / 50;
+                const bgLayer = document.querySelector('.bg-layer');
+                if(bgLayer) {
+                    bgLayer.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+                }
+            });
         });
     </script>
 
