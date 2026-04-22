@@ -292,7 +292,7 @@
         .info-card {
             animation:
                 cardSoftIn 0.8s ease-out forwards,
-                floatY 5s ease-in-out infinite;
+                floatY 6s ease-in-out infinite;
         }
         .card-label {
             color: var(--primary-gold);
@@ -387,8 +387,14 @@
             0% {
                 transform: translateY(0px);
             }
+            25% {
+                transform: translateY(-10px);
+            }
             50% {
-                transform: translateY(-6px);
+                transform: translateY(-18px);
+            }
+            75% {
+                transform: translateY(-10px);
             }
             100% {
                 transform: translateY(0px);
@@ -552,14 +558,123 @@
             box-shadow: 0 0 10px var(--primary-gold);
         }
 
+        .icon {
+            margin-bottom: 10px;
+        }
+
+        .icon svg {
+            width: 28px;
+            height: 28px;
+
+            fill: none;
+            stroke: var(--primary-gold);
+            stroke-width: 1.5;
+
+            transition: 0.3s;
+        }
+
+        /* hover effect 🔥 */
+        .info-card:hover .icon svg {
+            stroke: #fff;
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .glass-shine {
+            position: fixed;
+            top: 0;
+            left: -120%;
+            width: 80%;
+            height: 100%;
+
+            background: linear-gradient(
+                120deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.05) 20%,
+                rgba(255, 255, 255, 0.25) 50%,
+                rgba(255, 255, 255, 0.05) 80%,
+                transparent 100%
+            );
+
+            transform: skewX(-25deg);
+            pointer-events: none;
+            z-index: 9998;
+
+            animation: glassSweep 2.5s ease-out forwards;
+        }
+
+        .glass-sweep {
+            position: fixed;
+            top: 0;
+            left: -120%;
+            width: 80%;
+            height: 100%;
+
+            background: linear-gradient(
+                120deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 35%,
+                rgba(255,255,255,0.35) 50%,
+                rgba(255,255,255,0.03) 65%,
+                rgba(255,255,255,0) 100%
+            );
+
+            transform: skewX(-25deg);
+            pointer-events: none;
+            z-index: 9998;
+
+            opacity: 0;
+        }
+
+        /* 🔥 ENG MUHIM QISM */
+        .glass-sweep.active {
+            animation: glassSweep 2.5s ease forwards;
+        }
+
+        @keyframes glassSweep {
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                left: 120%;
+                opacity: 0;
+            }
+        }
+
+        background: linear-gradient(
+            120deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.03) 35%,
+            rgba(255,255,255,0.35) 50%,
+            rgba(255,255,255,0.03) 65%,
+            rgba(255,255,255,0) 100%
+        );
+
+        @keyframes glowPulse {
+            0%,100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        @keyframes textShine {
+            0% { background-position: -200px; }
+            100% { background-position: 200px; }
+        }
+
+        @keyframes btnShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
     </style>
 </head>
 <body>
     <div class="bg-layer"></div>
     <div class="overlay"></div>
+    <div class="glass-sweep" id="glassSweep"></div>
 
-
-    <audio id="mainAudio" src="isu1.mp3"></audio>
+    <audio id="mainAudio" src="isu1.mp3" loop></audio>
 
     <nav class="top-navbar">
         <div class="brand-logo">ISU</div>
@@ -569,32 +684,130 @@
     </nav>
 
     <div class="main-content">
-        <section class="profile-wrapper">
-            <div class="avatar-circle">
+        <section class="profile-wrapper" style="text-align:center; position:relative;">
+
+            <div class="avatar-circle" style="position:relative;">
                 <img src="avatar.jpg" alt="Umirova Sevara">
+
+                <!-- 🔥 glow -->
+                <div style="
+                    position:absolute;
+                    inset:-20px;
+                    border-radius:50%;
+                    background: radial-gradient(circle, rgba(214,36,159,0.35), rgba(79,91,213,0.2), transparent 70%);
+                    filter: blur(25px);
+                    z-index:0;
+                    animation: glowPulse 4s ease-in-out infinite;
+                "></div>
+
                 <div class="hearts-container"></div>
             </div>
-            <h1 class="user-name">UMIROVA SEVARA<br>ITOLMASOVNA</h1>
-            <a href="https://t.me/isu_umirovasevaraitolmasovna" target="_blank" class="action-btn">TELEGRAM</a>
+
+            <h1 style="
+                display:flex;
+                flex-direction:column;
+                gap:4px;
+                font-size:26px;
+                font-weight:800;
+                letter-spacing:2px;
+                margin-bottom:30px;
+            ">
+                <span style="
+                    background:linear-gradient(90deg,#fff,#c4a47c,#fff);
+                    -webkit-background-clip:text;
+                    -webkit-text-fill-color:transparent;
+                    animation:textShine 4s linear infinite;
+                ">UMIROVA</span>
+
+                <span style="
+                    background:linear-gradient(90deg,#fff,#c4a47c,#fff);
+                    -webkit-background-clip:text;
+                    -webkit-text-fill-color:transparent;
+                    animation:textShine 4s linear infinite;
+                ">SEVARA</span>
+
+                <span style="
+                    font-size:14px;
+                    letter-spacing:3px;
+                    opacity:0.6;
+                ">ITOLMASOVNA</span>
+            </h1>
+
+            <a href="https://t.me/isu_umirovasevaraitolmasovna" target="_blank"
+            style="
+                display:inline-block;
+                position:relative;
+                overflow:hidden;
+                background:#fff;
+                color:#000;
+                padding:18px 70px;
+                border-radius:50px;
+                font-weight:900;
+                letter-spacing:2px;
+                text-decoration:none;
+            ">
+                TELEGRAM
+
+                <!-- shine -->
+                <span style="
+                    position:absolute;
+                    top:0;
+                    left:-100%;
+                    width:100%;
+                    height:100%;
+                    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent);
+                    animation:btnShine 3s infinite;
+                "></span>
+            </a>
+
         </section>
 
         <section class="dynamic-grid">
+
             <div class="info-card delay-1">
+                <div class="icon">
+                    <!-- Teacher -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 13L3 9l9-5 9 5-9 7z"/>
+                    </svg>
+                </div>
                 <span class="card-label">KASBI</span>
                 <span class="card-value">O'qituvchi</span>
             </div>
+
             <div class="info-card delay-2">
+                <div class="icon">
+                    <!-- Mic (Dublyaj) -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 0014 0h-2zm-5 9v-3"/>
+                    </svg>
+                </div>
                 <span class="card-label">SOHASI</span>
                 <span class="card-value">Dublyajchi</span>
             </div>
+
             <div class="info-card delay-3">
+                <div class="icon">
+                    <!-- Calendar -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2zm13 6H4v12h16V8z"/>
+                    </svg>
+                </div>
                 <span class="card-label">TUG'ILGAN YILI</span>
                 <span class="card-value">09.12.2003</span>
             </div>
+
             <div class="info-card delay-4">
+                <div class="icon">
+                    <!-- Paint -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3C6.48 3 2 6.92 2 11c0 2.21 1.79 4 4 4h2c.55 0 1 .45 1 1 0 2.21 1.79 4 4 4 5.52 0 9-4.92 9-9s-4.48-8-10-8z"/>
+                    </svg>
+                </div>
                 <span class="card-label">HOBBY</span>
                 <span class="card-value">Rassomchilik</span>
             </div>
+
         </section>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -609,7 +822,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="video-container">
-                            <video src="ved2.mp4" poster="thumb.jpg" playsinline controls></video>
+                            <video src="vedi2.mp4" poster="thumb.jpg" playsinline controls></video>
                         </div>
                     </div>
                     <div class="swiper-slide">
@@ -633,7 +846,26 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // sahifa yuklangandan keyin 1 marta ham ishga tushadi
+            triggerGlassEffect();
 
+            // har 5 sekundda qayta ishlaydi
+            setInterval(() => {
+                triggerGlassEffect();
+            }, 5000);
+
+            function triggerGlassEffect() {
+                const glass = document.getElementById('glassSweep');
+
+                if (!glass) return;
+
+                // restart qilish uchun
+                glass.classList.remove('active');
+
+                void glass.offsetWidth; // reflow hack (MUHIM)
+
+                glass.classList.add('active');
+            }
             // --- 1. PROFILDAGI YURAKCHALAR ANIMATSIYASI (GRAVITY BILAN) ---
             const avatar = document.querySelector('.avatar-circle');
             const container = document.querySelector('.hearts-container');
