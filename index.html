@@ -490,42 +490,40 @@
         }
 
         /* Video Section Dizayni */
+        /* Video Section - Slayder o'lchamini moslashtirish */
         .video-slider-section {
             width: 100%;
-            max-width: 440px; /* Info-card o'lchami bilan bir xil */
-            margin: 35px auto 20px;
-            padding: 0 5px;
+            max-width: 400px; /* Cardlar bilan bir xil kenglik */
+            margin: 30px auto;
+            padding: 0 10px;
             opacity: 0;
-            transform: translateY(30px);
-            animation: cardSoftIn 0.8s ease-out 1.2s forwards; /* Eng oxirida paydo bo'ladi */
+            animation: cardSoftIn 0.8s ease-out 1.2s forwards;
         }
 
         .swiper {
             width: 100%;
-            border-radius: 30px; /* Yumshoqroq burchaklar */
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            padding-top: 100%; /* 1x1 nisbat */
+            /* 100% o'rniga 16:9 yoki videoga mos nisbat ishlatamiz */
+            aspect-ratio: 9 / 16; /* TikTok/Reels formatidagi videolar uchun eng yaxshisi */
             background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 25px;
         }
 
         .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            cursor: pointer;
+            object-fit: cover; /* Videoni chekkalarsiz to'ldiradi */
         }
 
         /* Navigatsiya tugmalarini tillarang qilish */
@@ -610,7 +608,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="video-container">
-                            <video src="video2.mp4" poster="thumb2.jpg" playsinline controls></video>
+                            <video src="video2.mp4" poster="thumb.jpg" playsinline controls></video>
                         </div>
                     </div>
                     <div class="swiper-slide">
@@ -738,17 +736,9 @@
             };
 
             const swiper = new Swiper(".mySwiper", {
-                effect: "coverflow",
+                effect: "cards", // "coverflow" o'rniga "cards" effekti mobil profil uchun juda chiroyli chiqadi
                 grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: "auto",
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2,
-                    slideShadows: true,
-                },
+                initialSlide: 0,
                 pagination: {
                     el: ".swiper-pagination",
                     dynamicBullets: true,
@@ -759,8 +749,11 @@
                 },
                 on: {
                     slideChange: function () {
-                        // Slider surilganda barcha videolarni to'xtatish
-                        document.querySelectorAll('video').forEach(v => v.pause());
+                        // Boshqa slaydga o'tganda videolarni to'xtatish
+                        document.querySelectorAll('video').forEach(v => {
+                            v.pause();
+                            v.currentTime = 0; // Videoni boshiga qaytarish (ixtiyoriy)
+                        });
                     }
                 }
             });
