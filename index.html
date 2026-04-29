@@ -667,6 +667,12 @@
             0% { left: -100%; }
             100% { left: 100%; }
         }
+
+        .info-card, .top-navbar, .video-container {
+            will-change: transform; /* Brauzerni GPU tayyorlashga majbur qiladi */
+            transform: translateZ(0); /* 3D acceleration yoqish */
+        }
+
     </style>
 </head>
 <body>
@@ -817,17 +823,17 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="video-container">
-                            <video src="video1.mp4" poster="thumb1.jpg" playsinline controls></video>
+                            <video src="video1.mp4" poster="thumb1.jpg" playsinline controls preload="none"></video>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="video-container">
-                            <video src="ved2.mp4" poster="thumb.jpg" playsinline controls></video>
+                            <video src="ved2.mp4" poster="thumb.jpg" playsinline controls preload="none"></video>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="video-container">
-                            <video src="vedi3.mp4" poster="thumb3.jpg" playsinline controls></video>
+                            <video src="vedi3.mp4" poster="thumb3.jpg" playsinline controls preload="none"></video>
                         </div>
                     </div>
                 </div>
@@ -971,6 +977,9 @@
             const swiper = new Swiper(".mySwiper", {
                 effect: "cards", // "coverflow" o'rniga "cards" effekti mobil profil uchun juda chiroyli chiqadi
                 grabCursor: true,
+                watchSlidesProgress: true, // GPU uchun yordam
+                preloadImages: false,      // Rasmlarni oldindan yuklamaslik
+                lazy: true,
                 initialSlide: 0,
                 pagination: {
                     el: ".swiper-pagination",
